@@ -38,7 +38,7 @@ body {
   left: 0%;
 }
 
-#top5-banner {
+#playlister-banner {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -54,8 +54,8 @@ body {
   border-radius: 10px;
 }
 #splash-screen {
-  background-image: linear-gradient(to bottom, #b8b808, #636723);
-  color: white;
+  background-image: linear-gradient(to bottom,#614385 ,#516395);
+  color:gold;
   font-size: 5vw;
   border-color: black;
   border-width: 2px;
@@ -94,13 +94,14 @@ body {
   cursor: not-allowed;
 }
 
-#top5-list-selector {
+#playlist-selector {
   position: absolute;
   left: 0%;
   top: 10%;
   width: 100%;
   height: 80%;
-  background-color: var(--swatch-primary);
+  display:flex;
+  background-image: linear-gradient(to bottom,#516395,#614385);
 }
 
 #top5-workspace {
@@ -112,7 +113,7 @@ body {
   background-color: var(--swatch-accent);
 }
 
-#top5-statusbar {
+#playlister-statusbar {
   position: absolute;
   left: 0%;
   top: 90%;
@@ -127,10 +128,12 @@ body {
 
 #list-selector-heading {
   position: absolute;
+  color: gold;
   left: 0%;
   top: 0%;
   width: 100%;
   height: 10%;
+  background-image: linear-gradient(to bottom,#614385 ,#516395);
   text-align: center;
   font-size: 24pt;
   font-weight: bold;
