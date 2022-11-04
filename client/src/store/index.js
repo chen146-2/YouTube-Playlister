@@ -93,7 +93,7 @@ function GlobalStoreContextProvider(props) {
                     currentList: null,
                     currentSongIndex: -1,
                     currentSong: null,
-                    newListCounter: store.newListCounter,
+                    newListCounter: payload,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null
@@ -255,14 +255,23 @@ function GlobalStoreContextProvider(props) {
     store.closeCurrentList = function () {
         storeReducer({
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
-            payload: {}
+            payload: store.newListCounter
+        });
+        tps.clearAllTransactions();
+        history.push("/");
+    }
+
+    store.clearNewListCounter = function () {
+        storeReducer({
+            type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+            payload: 0
         });
         tps.clearAllTransactions();
     }
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let newListName = "Untitled" + store.newListCounter;
+        let newListName = "Untitled - " + store.newListCounter;
         const response = await api.createPlaylist(newListName, [], auth.user.email);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
