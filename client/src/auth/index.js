@@ -95,6 +95,8 @@ function AuthContextProvider(props) {
         }
     }
 
+    // USER LOGOUT - ONE OPTION OF LOGOUT IN THE MENU. RETURNS TO SPLASH SCREEN AFTER CLICKING LOGOUT.
+    
     auth.logoutUser = async function() {
         const response = await api.logoutUser();
         if (response.status === 200) {
