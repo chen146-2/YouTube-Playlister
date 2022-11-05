@@ -9,11 +9,8 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    width: 1200,
     boxShadow: 24,
-    p: 4,
 };
 
 export default function MUIDeleteModal() {
@@ -26,7 +23,7 @@ export default function MUIDeleteModal() {
         store.deleteMarkedList();
     }
     function handleCloseModal(event) {
-        store.unmarkListForDeletion();
+        store.hideModals();
     }
 
     return (
@@ -35,22 +32,27 @@ export default function MUIDeleteModal() {
         >
             <Box sx={style}>
                 <div className="modal-dialog">
-                <header className="dialog-header">
-                    Delete the {name} Top 5 List?
-                </header>
-                <div id="confirm-cancel-container">
-                    <button
-                        id="dialog-yes-button"
-                        className="modal-button"
-                        onClick={handleDeleteList}
-                    >Confirm</button>
-                    <button
-                        id="dialog-no-button"
-                        className="modal-button"
-                        onClick={handleCloseModal}
-                    >Cancel</button>
+                    <header className="modal-north">
+                        Delete the "{name}" playlist?
+                    </header>
+                    <div className='modal-center'>
+                        <div className='modal-center-content'>
+                            Are you sure you wish to permanently delete the "{name}" playlist?
+                        </div>
+                    </div>
+                    <div id="confirm-cancel-container">
+                        <button
+                            id="dialog-yes-button"
+                            className="modal-button"
+                            onClick={handleDeleteList}
+                        >Confirm</button>
+                        <button
+                            id="dialog-no-button"
+                            className="modal-button"
+                            onClick={handleCloseModal}
+                        >Cancel</button>
+                    </div>
                 </div>
-            </div>
             </Box>
         </Modal>
     );
