@@ -280,7 +280,6 @@ input {
   cursor: pointer;
   visibility: hidden;
   opacity: 0;
-  transition: all 0.35s ease-in;
   font-family: var(--font-primary);
 }
 
@@ -292,7 +291,7 @@ input {
 .modal-root {
   position: relative;
   max-width: 1200vw;
-  max-height: 600vh;
+  max-height: 800vh;
   overflow: visible;
   display: flex;
   flex-direction: column;
@@ -366,7 +365,7 @@ span {
 .modal-dialog {
   position: relative;
   max-width: 1200px;
-  max-height: 600vh;
+  max-height: 800vh;
   background: var(--swatch-complement);
   overflow: visible;
   cursor: default;
