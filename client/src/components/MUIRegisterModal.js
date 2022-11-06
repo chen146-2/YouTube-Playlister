@@ -13,14 +13,14 @@ const style = {
     boxShadow: 24,
 };
 
-export default function MUILoginModal() {
+export default function MUIRegisterModal() {
     const { auth } = useContext(AuthContext);
 
     function handleClose(event) {
         auth.hideModals();
     }
     let errorMsg="";
-    if (auth.error && auth.isLoginModalOpen()) {
+    if (auth.error && auth.isRegisterModalOpen()) {
         errorMsg = auth.error.response.data.errorMessage;
     }
     return(

@@ -12,6 +12,7 @@ import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import MUIRegisterModal from './MUIRegisterModal';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
@@ -27,7 +28,10 @@ export default function RegisterScreen() {
             formData.get('passwordVerify')
         );
     };
-
+    let modalJSX="";
+    if (auth.isRegisterModalOpen()) {
+        modalJSX=<MUIRegisterModal/>;
+    }
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -119,6 +123,7 @@ export default function RegisterScreen() {
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
+                {modalJSX}
             </Container>
     );
 }

@@ -12,7 +12,8 @@ export const AuthActionType = {
     LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
     INVALID_LOGIN: "INVALID_LOGIN",
-    CLEAR_MODALS: "CLEAR_MODALS"
+    CLEAR_MODALS: "CLEAR_MODALS",
+    INVALID_REGISTER: "INVALID_REGISTER"
 }
 
 function AuthContextProvider(props) {
@@ -20,7 +21,8 @@ function AuthContextProvider(props) {
         user: null,
         loggedIn: false,
         invalidLogin: false,
-        error: null
+        error: null,
+        invalidRegister: false
     });
     const history = useHistory();
 
@@ -36,7 +38,8 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: payload.loggedIn,
                     invalidLogin: false,
-                    error:null
+                    error:null,
+                    invalidRegister: false
                 });
             }
             case AuthActionType.LOGIN_USER: {
@@ -44,7 +47,8 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: true,
                     invalidLogin: false,
-                    error:null
+                    error:null,
+                    invalidRegister: false
                 })
             }
             case AuthActionType.LOGOUT_USER: {
@@ -52,7 +56,8 @@ function AuthContextProvider(props) {
                     user: null,
                     loggedIn: false,
                     invalidLogin: false,
-                    error:null
+                    error:null,
+                    invalidRegister: false
                 })
             }
             case AuthActionType.REGISTER_USER: {
@@ -60,7 +65,8 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: true,
                     invalidLogin: false,
-                    error:null
+                    error:null,
+                    invalidRegister: false
                 })
             }
             case AuthActionType.INVALID_LOGIN: {
@@ -68,7 +74,8 @@ function AuthContextProvider(props) {
                     user: null,
                     loggedIn: false,
                     invalidLogin: true,
-                    error:payload
+                    error:payload,
+                    invalidRegister: false
                 })
             }
             case AuthActionType.CLEAR_MODALS: {
@@ -76,8 +83,18 @@ function AuthContextProvider(props) {
                     user: null,
                     loggedIn: false,
                     invalidLogin: false,
-                    error:null
+                    error:null,
+                    invalidRegister: false
                 })
+            }
+            case AuthActionType.INVALID_REGISTER: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    invalidLogin: false,
+                    error:payload,
+                    invalidRegister: true
+                });
             }
             default:
                 return auth;
@@ -98,15 +115,23 @@ function AuthContextProvider(props) {
     }
 
     auth.registerUser = async function(firstName, lastName, email, password, passwordVerify) {
-        const response = await api.registerUser(firstName, lastName, email, password, passwordVerify);      
-        if (response.status === 200) {
+        try {
+            const response = await api.registerUser(firstName, lastName, email, password, passwordVerify);      
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.REGISTER_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+            }
+        } catch (err) {
+            console.log(err);
             authReducer({
-                type: AuthActionType.REGISTER_USER,
-                payload: {
-                    user: response.data.user
-                }
-            })
-            history.push("/");
+                type: AuthActionType.INVALID_REGISTER,
+                payload:err
+            });
         }
     }
 
@@ -131,7 +156,10 @@ function AuthContextProvider(props) {
         }
     }
     auth.isLoginModalOpen = () => {
-        return auth.invalidLogin == true;
+        return auth.invalidLogin;
+    }
+    auth.isRegisterModalOpen = () => {
+        return auth.invalidRegister;
     }
     auth.hideModals = () => {
         authReducer({
