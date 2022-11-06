@@ -49,12 +49,12 @@ export default function MUIEditSongModal() {
 
     return (
         <Modal
-            open={store.listMarkedForDeletion !== null}
+            open={true}
         >
             <Box sx={style}>
             <div
             id="edit-song-modal"
-            className="modal is-visible"
+            className="modal-dialog"
             data-animation="slideInOutLeft">
             <div
                 id='edit-song-root'

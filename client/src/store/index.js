@@ -77,7 +77,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload.idNamePairs,
-                    currentList: payload.playlist,
+                    currentList: payload.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -252,7 +252,8 @@ function GlobalStoreContextProvider(props) {
                                     type: GlobalStoreActionType.CHANGE_LIST_NAME,
                                     payload: {
                                         idNamePairs: pairsArray,
-                                        playlist: playlist
+                                        playlist: playlist,
+                                        currentList: null
                                     }
                                 });
                             }
@@ -343,9 +344,11 @@ function GlobalStoreContextProvider(props) {
     }
     store.deleteList = function (id) {
         async function processDelete(id) {
-            await api.deletePlaylistById(id);
-            store.loadIdNamePairs();
-            history.push("/");
+            let response = await api.deletePlaylistById(id);
+            if (response.status==200) {
+                store.loadIdNamePairs();
+                history.push("/");
+            }
         }
         processDelete(id);
     }
