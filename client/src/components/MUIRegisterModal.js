@@ -3,6 +3,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import AuthContext from '../auth';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const style = {
     position: 'absolute',
@@ -32,11 +34,15 @@ export default function MUIRegisterModal() {
                     <header className="modal-north">
                         {errorMsg}
                     </header>
-                    <div className='modal-center'>
-                        <div className='modal-center-content'>
-                            {errorMsg}
-                        </div>
-                    </div>
+                    <Alert 
+                        severity='error' 
+                        sx={{
+                            fontSize: 28
+                        }}
+                    >
+                        <AlertTitle sx={{fontSize:34}}>Error</AlertTitle>
+                        <strong>{errorMsg}</strong>
+                    </Alert>
                     <div id="confirm-cancel-container">
                         <button
                             id="dialog-yes-button"
