@@ -283,6 +283,7 @@ function GlobalStoreContextProvider(props) {
             payload: 0
         });
         tps.clearAllTransactions();
+        history.push("/");
     }
 
     // THIS FUNCTION CREATES A NEW LIST
