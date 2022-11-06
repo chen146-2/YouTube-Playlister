@@ -31,7 +31,8 @@ export const GlobalStoreActionType = {
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
     HIDE_MODALS: "HIDE_MODALS",
-    FINISH_LIST_DELETION: "FINISH_LIST_DELETION"
+    FINISH_LIST_DELETION: "FINISH_LIST_DELETION",
+    SHOW_INVALID_LOGIN: "SHOW_INVALID_LOGIN"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -41,7 +42,8 @@ const CurrentModal = {
     NONE : "NONE",
     DELETE_LIST : "DELETE_LIST",
     EDIT_SONG : "EDIT_SONG",
-    REMOVE_SONG : "REMOVE_SONG"
+    REMOVE_SONG : "REMOVE_SONG",
+    INVALID_LOGIN : "INVALID_LOGIN"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -224,6 +226,19 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null
                 });
             }
+            case GlobalStoreActionType.SHOW_INVALID_LOGIN: {
+                return setStore({
+                    currentModal : CurrentModal.INVALID_LOGIN,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null
+                });
+            }
             default:
                 return store;
         }
@@ -370,6 +385,12 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.REMOVE_SONG,
             payload: {currentSongIndex: songIndex, currentSong: songToRemove}
         });        
+    }
+    store.showInvalidLoginModal = function () {
+        storeReducer({
+            type: GlobalStoreActionType.SHOW_INVALID_LOGIN,
+            payload:{}
+        });
     }
     store.hideModals = () => {
         storeReducer({

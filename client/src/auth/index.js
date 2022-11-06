@@ -10,13 +10,17 @@ export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    INVALID_LOGIN: "INVALID_LOGIN",
+    CLEAR_MODALS: "CLEAR_MODALS"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        invalidLogin: false,
+        error: null
     });
     const history = useHistory();
 
@@ -30,25 +34,49 @@ function AuthContextProvider(props) {
             case AuthActionType.GET_LOGGED_IN: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: payload.loggedIn
+                    loggedIn: payload.loggedIn,
+                    invalidLogin: false,
+                    error:null
                 });
             }
             case AuthActionType.LOGIN_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    invalidLogin: false,
+                    error:null
                 })
             }
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
-                    loggedIn: false
+                    loggedIn: false,
+                    invalidLogin: false,
+                    error:null
                 })
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    invalidLogin: false,
+                    error:null
+                })
+            }
+            case AuthActionType.INVALID_LOGIN: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    invalidLogin: true,
+                    error:payload
+                })
+            }
+            case AuthActionType.CLEAR_MODALS: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    invalidLogin: false,
+                    error:null
                 })
             }
             default:
@@ -83,18 +111,34 @@ function AuthContextProvider(props) {
     }
 
     auth.loginUser = async function(email, password) {
-        const response = await api.loginUser(email, password);
-        if (response.status === 200) {
+        try {
+            const response = await api.loginUser(email, password);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.LOGIN_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+            }
+        } catch(err) {
+            console.log(err);
             authReducer({
-                type: AuthActionType.LOGIN_USER,
-                payload: {
-                    user: response.data.user
-                }
-            })
-            history.push("/");
+                type: AuthActionType.INVALID_LOGIN,
+                payload: err
+            });
         }
     }
-
+    auth.isLoginModalOpen = () => {
+        return auth.invalidLogin == true;
+    }
+    auth.hideModals = () => {
+        authReducer({
+            type: AuthActionType.CLEAR_MODALS,
+            payload: {}
+        });    
+    }
     // USER LOGOUT - ONE OPTION OF LOGOUT IN THE MENU. RETURNS TO SPLASH SCREEN AFTER CLICKING LOGOUT.
     
     auth.logoutUser = async function() {
