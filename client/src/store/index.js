@@ -526,7 +526,7 @@ function GlobalStoreContextProvider(props) {
         tps.doTransaction();
     }
     store.canAddNewSong = function() {
-        return (store.currentList !== null);
+        return (store.currentList !== null) && (!store.isEditSongModalOpen()) && (!store.isRemoveSongModalOpen());
     }
     store.canUndo = function() {
         return ((store.currentList !== null) && tps.hasTransactionToUndo());
@@ -535,7 +535,7 @@ function GlobalStoreContextProvider(props) {
         return ((store.currentList !== null) && tps.hasTransactionToRedo());
     }
     store.canClose = function() {
-        return (store.currentList !== null);
+        return (store.currentList !== null) && (!store.isEditSongModalOpen()) && (!store.isRemoveSongModalOpen());
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
